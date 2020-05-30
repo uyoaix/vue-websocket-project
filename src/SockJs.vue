@@ -11,8 +11,11 @@
     </el-row>
 
 
-    <el-row type="flex" justify="center" :gutter="6">
-      <el-col :span="2"><el-button @click="subscribeCategoriesMatches">订阅全部比赛列表</el-button></el-col>
+    <el-row type="flex" justify="center" :gutter="10">
+      <el-col :span="5"><el-button @click="subscribeCategoriesMatches">订阅全部比赛列表</el-button></el-col>
+      <el-row type="flex" justify="center" :gutter="5">
+      <el-button  @click="categoriesMatchesCount">全部比赛列表</el-button>    
+    </el-row>
     </el-row>
 
     <el-row type="flex" justify="center" :gutter="6">
@@ -28,9 +31,7 @@
       <el-col :span="2"><el-button @click="sendMessage">发送消息</el-button></el-col>
     </el-row>
 
-    <el-row type="flex" justify="center" :gutter="10">
-      <el-button  @click="categoriesMatchesCount">全部比赛列表</el-button>    
-    </el-row>
+    
     <el-row type="flex" justify="center" :gutter="10">
       <el-button  @click="collectFavourite">收藏联赛</el-button>    
     </el-row>
@@ -97,7 +98,7 @@ export default {
         inputMsg: '',
         baseUrl: 'http://api.devbitgame.com/lottery',
         localBaseUrl: 'http://localhost:8080/lottery',
-        token: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTA2MDc5OTUsImlhdCI6MTU5MDU2NDc5NSwidXNlcl9uYW1lIjoiMTAwMDAwMDU0IiwianRpIjoiOGMxZWQ1OTAtMTZhNy00YTQxLWE0OGQtYTQ0MGNkNzcyOGZkIiwiY2xpZW50X2lkIjoid3d3Iiwic2NvcGUiOlsidWkiXX0.5BVorQPq_GhaHGhkwNgfUrQ7MxcsHuIt7PCgxTCKNXo'
+        token: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTA2OTYzNzEsImlhdCI6MTU5MDY1MzE3MSwidXNlcl9uYW1lIjoiNCIsImp0aSI6IjU1NDI5OWQ4LTVmZjQtNDY5Ny04OTljLWYxYTZlZjg3MDEzOSIsImNsaWVudF9pZCI6Ind3dyIsInNjb3BlIjpbInVpIl19.xIZYCmhWTE65UyQZtHnDJkp3q8j8u3hlL1Ci1kxaL3M'
       }
     },
     
@@ -141,12 +142,12 @@ export default {
         },
 
         subscribeCategoriesMatches(){
-
-            this.stompClient.subscribe("/user/queue/categories_matches_count", function (e) {
+          let data = {'lang':'zh-Hans'}
+            this.stompClient.subscribe("/topic/categories_matches_count", function (e) {
               let data = JSON.parse(e.body)
               console.log('全部比赛返回消息：', data)
 
-            });
+            }, data);
         },
 
         subscribeFavouriteOperation(){
@@ -205,7 +206,7 @@ export default {
           //     'client-id':'my-client-id',
           //     'Authorization': this.token
           // };
-          this.stompClient.send("/lottery/categories_matches_count", {}, JSON.stringify(data));
+          this.stompClient.send("/topic/categories_matches_count", {}, JSON.stringify(data));
 
         },
 

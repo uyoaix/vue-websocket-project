@@ -5,44 +5,39 @@
       <el-button @click="connectWebSocket">Connect websocket</el-button>
     </el-row>
     
-    <el-row type="flex" justify="center" :gutter="6">
-      <el-col :span="2"><el-button @click="subscribeMessage">Subscribe public message</el-button></el-col>
+    <el-row type="flex" justify="center" :gutter="20">
+      <el-col :span="10"><el-button @click="subscribeMessage">Subscribe public message</el-button></el-col>
+      <el-row type="flex" justify="right" :gutter="10">
+      <el-col :span="10"><el-input v-model="inputMsg" placeholder="send message"/></el-col>
+      <el-col :span="5"><el-button @click="sendMessage">send message</el-button></el-col>
+    </el-row>
     </el-row>
 
 
-    <el-row type="flex" justify="center" :gutter="6">
-      <el-col :span="2"><el-button @click="subscribeUserMessage">Subscribe no login user queue</el-button></el-col>
+    <el-row type="flex" justify="center" :gutter="20">
+      <el-col :span="10" justify="left"><el-button @click="subscribeUserMessage">Subscribe no login user queue</el-button></el-col>
+      <el-row type="flex" justify="right" :gutter="5">
+      <el-button  @click="sayHelloToAnonymous">sayHelloToAnonymous</el-button>    
+    </el-row>
     </el-row>
 
-    <el-row type="flex" justify="center" :gutter="6">
+    <el-row type="flex" justify="center" :gutter="20">
   
-      <el-col :span="2"><el-button @click="subscribeLoginUserMessage">Subscribe login user queue</el-button></el-col>
-    </el-row>
-
-    <el-row type="flex" justify="center" :gutter="6">
-      <el-col :span="4"><el-input v-model="inputMsg" placeholder="send message"/></el-col>
-      <el-col :span="2"><el-button @click="sendMessage">send message</el-button></el-col>
-    </el-row>
-
-    <el-row type="flex" justify="center" :gutter="10">
-      <el-button  @click="teamInfo">sayHello</el-button>    
-    </el-row>
-    <el-row type="flex" justify="center" :gutter="10">
+      <el-col :span="10" justify="left"><el-button @click="subscribeLoginUserMessage">Subscribe login user queue</el-button></el-col>
+      <el-row type="flex" justify="center" :gutter="10">
       <el-button  @click="userInfo">Userinfo</el-button>    
     </el-row>
-    <el-row type="flex" justify="center" :gutter="10">
-      <el-button  @click="sendDefault">sendDefault</el-button>    
     </el-row>
-    <el-row type="flex" justify="center" :gutter="10">
-      <el-button  @click="sendHttpRequest">sendHttpRequest</el-button>    
-    </el-row>
-    <el-row type="flex" justify="center" :gutter="10">
-      <el-button  @click="testSubscribeMessage">testSubscribeMessage</el-button>    
+
+
+  
+    <el-row type="flex" justify="center" :gutter="20">
+      <el-button justify="left" @click="testSubscribeMessage">testSubscribeMessage</el-button>    
     </el-row>
     
     
-    <el-row type="flex" justify="center" :gutter="10">
-      <el-button @click="closeWebSocket">Disconnect websocket</el-button>
+    <el-row type="flex" justify="center" :gutter="20">
+      <el-button justify="left" @click="closeWebSocket">Disconnect websocket</el-button>
     </el-row>
 
   </div>
@@ -71,7 +66,7 @@ export default {
         topicSub: '', 
         inputMsg: '',
         baseUrl: 'http://127.0.0.1:8082',
-        token: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTA2OTk0MTYsInVzZXJfbmFtZSI6IjEiLCJqdGkiOiI0NzNjOTVlYy1iNjUwLTQ2OTUtOTVhMy00ODYzZjRjOWZjOGQiLCJjbGllbnRfaWQiOiJ0ZXN0LWNsaWVudC1pZCIsInNjb3BlIjpbImFsbCJdfQ.YH6yChvdATn1vMonbc0OhSgI_kTi3KeIzgCldypInLg'
+        token: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTExNzIwMTUsInVzZXJfbmFtZSI6IjEiLCJqdGkiOiI4Y2JlNjBlMi05NjI0LTQ1YmQtOWJjZS0wZjk5ZDRkNGViNmUiLCJjbGllbnRfaWQiOiJ0ZXN0LWNsaWVudC1pZCIsInNjb3BlIjpbImFsbCJdfQ.jNWNuw3EXlm8nFPnmoJEZ0aWmpxfBM9j_CI-Pw2Ds64'
       }
     },
     
@@ -161,34 +156,15 @@ export default {
         },
 
 
-        sendHttpRequest(){
-          let data = {}
-          this.stompClient.send("/app/testHttpReq", {}, JSON.stringify(data));
-          
-        },
-        sendDefault(){
-          let data = {}
-          this.stompClient.send("/app/testDefault", {}, JSON.stringify(data));
-          
-        },
         
         
-
-        favouriteLeagues(){
-          // var headers = {
-          //     'client-id':'my-client-id',
-          //     'Authorization': this.token
-          // };     
-          this.stompClient.send("/app/user/favourite_leagues?lang=zh-Hans", {}, {});
-
-        },
-        teamInfo(){
+        sayHelloToAnonymous(){
           let data = {}
           // var headers = {
           //     'client-id':'my-client-id',
           //     'Authorization': this.token
           // };
-          this.stompClient.subscribe("/app/testSubscribeMessage", {}, JSON.stringify(data));
+          this.stompClient.send("/app/user/sayHello", {}, JSON.stringify(data));
 
         },
         userInfo(){
